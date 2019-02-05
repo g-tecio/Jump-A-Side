@@ -10,7 +10,8 @@ public class AdMob : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        string appId = "ca-app-pub-5267056163100832~9843798290";
+        //string appId = "ca-app-pub-5267056163100832~7826014748"; //iOS
+        string appId = "ca-app-pub-5267056163100832~6327679363"; //Android
         MobileAds.Initialize(appId);
         RequestBanner();
     }
@@ -18,9 +19,9 @@ public class AdMob : MonoBehaviour
     public static void RequestBanner()
     {
 #if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-5267056163100832/7597635256";
+        string adUnitId = "ca-app-pub-5267056163100832/1015642937";
 #elif UNITY_IPHONE
-      string adUnitId = "ca-app-pub-5267056163100832/8575668832";
+      string adUnitId = "ca-app-pub-5267056163100832/8372809658";
 #else
       string adUnitId = "unexpected_platform";
 #endif

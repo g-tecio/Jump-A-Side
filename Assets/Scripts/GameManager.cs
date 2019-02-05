@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Advertisements;
 
 public class GameManager : MonoBehaviour {
 
     public GameObject panelMainMenu, panelGameScene, panelMissios, PanelGameover, panelStore, panelHasBeenBought;
     public GameObject showTutorial, buttonTapToPlay, buttonStore, buttonNoAds, buttonSound, buttonLeaderboard, buttonRestorePurchase, closeTutorialButton, titleGame;
-
     public GameObject playerObj, tilesGeneratorObj, gradient6Obj;
 
-    public bool gameHasBegun;
+    int NumGame;
+
+    public bool gameHasBegun, Adfree;
 
     void Start ()
     {
@@ -31,6 +33,8 @@ public class GameManager : MonoBehaviour {
 	
 	void Update ()
     {
+        Adfree = GameObject.Find("RemoveAds").GetComponent<PurchaserManager>().Adfree;
+
         if (buttonSound.GetComponent<UnityEngine.UI.Toggle>().isOn == true)
         {
             //print("THE SOUND IS MUTED");
@@ -70,6 +74,19 @@ public class GameManager : MonoBehaviour {
     public void ReloadGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+
+        NumGame = NumGame + 1;
+        PanelGameover.gameObject.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        PlayerPrefs.SetInt("NumGame", NumGame);
+
+
+        if (NumGame % 3 == 0 && Adfree == false)
+        {
+            Advertisement.Show();
+
+        }
     }
 
 

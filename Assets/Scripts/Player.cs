@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     public GameObject bigButton2;
     public GameObject smallButton2;
 
+    //public GameObject deadEffectPrefab;
+
     //Score Text
     public TextMeshProUGUI scoreText;
 
@@ -334,9 +336,9 @@ public class Player : MonoBehaviour
             if (!isDead)
             {
                 //UpdateScore
-               // scoreText.text = (int.Parse(scoreText.text) + 1).ToString();
+                // scoreText.text = (int.Parse(scoreText.text) + 1).ToString();
 
-               GameObject.Find("GameManager").GetComponent<ScoreManager>().AddScore();
+                GameObject.Find("GameManager").GetComponent<ScoreManager>().AddScore();
 
                 //Play Sound
                 audiJump.Play();
@@ -369,13 +371,13 @@ public class Player : MonoBehaviour
             if (firstJump)
             {
                 StartCoroutine(FallTile(col.gameObject, 2.35f));
-               // rb.AddForce(new Vector2(10.7f * 30f, 9.8f * 21.5f));
+                // rb.AddForce(new Vector2(10.7f * 30f, 9.8f * 21.5f));
                 //return;
             }
             else
             {
                 StartCoroutine(FallTile(col.gameObject, 2.35f));
-             //   rb.AddForce(new Vector2(10.7f * 30f, 9.8f * 21.5f));
+                //   rb.AddForce(new Vector2(10.7f * 30f, 9.8f * 21.5f));
             }
         }
 
@@ -451,7 +453,7 @@ public class Player : MonoBehaviour
 
         GameObject gameTile = GameObject.Find("Tile(Clone)");
         //gameTile.GetComponent<Animator>().enabled = true;
-        gameOverScreen.SetActive(true);
+       
         panelGameScene.SetActive(false);
 
         Destroy(GameObject.Find("Tile(Clone)"));
@@ -461,13 +463,11 @@ public class Player : MonoBehaviour
             Destroy(GameObject.Find("Tile(Clone)"));
             Destroy(GameObject.FindWithTag("smallTile"));
             Destroy(GameObject.FindWithTag("BigTile(Clone)"));
-
-
         }
+        gameOverScreen.SetActive(true);
 
 
-
-
+      //  Destroy(Instantiate(deadEffectPrefab, transform.position, Quaternion.identity), 1.0f);
 
         panelGameScene.gameObject.SetActive(false);
         // tile.gameObject.SetActive(false);

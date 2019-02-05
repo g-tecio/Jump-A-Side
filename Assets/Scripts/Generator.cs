@@ -9,15 +9,11 @@ public class Generator : MonoBehaviour
     private float xDiff = 1.1f;
     private float yDiffSmall = 0.5f;
     private float yDiffeBig = 1.4f;
-
+    private float xPos = -2.5f;
     private float xPosLeft = -1.0f;
     private float xPosRight = 0.1f;
-
-    private float xPosLeft2 = -2.0f;
-    private float xPosRight2 = 0.2f;
     private float yPos = -4.5f;
-    private float xPos = -2.5f;
-    int random2;
+    public int random2;
     //-2.5f;
     //-4.5f;
 
@@ -50,6 +46,8 @@ public class Generator : MonoBehaviour
         }
         else
         {
+
+
             int random = Random.Range(0, 5);
             if (side == true && firstJump == false)
             {
@@ -112,10 +110,13 @@ public class Generator : MonoBehaviour
                     {
                         GenerateBigTileRight2();
                     }
-
-
                 }
             }
+
+
+
+
+
 
             if (side == true)
             {
@@ -137,8 +138,8 @@ public class Generator : MonoBehaviour
         xPos += xDiff;
 
         TilePrefab.tag = smallTag;
-
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
+        print(xPosLeft);
 
     }//End GenerateSmallTile
 
@@ -150,6 +151,7 @@ public class Generator : MonoBehaviour
 
         TilePrefab.tag = bigTag;
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
+        print(xPosLeft);
 
     }//End GenerateBigTile
 
@@ -157,10 +159,11 @@ public class Generator : MonoBehaviour
     {
 
         yPos += yDiffSmall;
-        xPos -= xDiff;
+        xPos += xDiff;
 
         TilePrefab.tag = smallTag;
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
+        print(xPosRight);
 
     }//End GenerateSmallTile
 
@@ -172,8 +175,10 @@ public class Generator : MonoBehaviour
 
         TilePrefab.tag = bigTag;
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
+        print(xPosRight);
 
     }//End GenerateBigTile
+
 
     void GenerateSmallTileLeft2()
     {
@@ -220,6 +225,5 @@ public class Generator : MonoBehaviour
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
 
     }//End GenerateBigTile
-
 
 }

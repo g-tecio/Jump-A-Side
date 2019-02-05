@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: CartwheelGalaxy
-  productName: Righty-Lefty
+  productName: Lefty-Righty
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -714,8 +714,8 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: b873a42d-96d2-4ad2-99c9-24110240cb14
-  projectName: CusualGameTest
+  cloudProjectId: e18272d0-7c5c-4b01-9c87-af5f6a930120
+  projectName: LeftyRighty
   organizationId: cartwheelgalaxyinc
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
