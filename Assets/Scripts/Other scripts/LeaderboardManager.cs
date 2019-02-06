@@ -83,18 +83,6 @@ public class LeaderboardManager : MonoBehaviour
 
         if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
-            /* * PlayGamesPlatform.Instance.LoadScores(
-             GPGSIds.leaderboard_top_players,
-             LeaderboardStart.PlayerCentered,
-             10,
-             LeaderboardCollection.Public,
-             LeaderboardTimeSpan.AllTime,
-             (data) =>
-             {
-                 mStatus = "Leaderboard data valid: " + data.Valid;
-                 mStatus += "\n approx:" + data.ApproximateCount + " have " + data.Scores.Length;
-             });
-             */
             PlayGamesPlatform.Instance.ShowLeaderboardUI();
         }
         else
@@ -112,8 +100,7 @@ public class LeaderboardManager : MonoBehaviour
 #if UNITY_ANDROID
         if (!PlayGamesPlatform.Instance.IsAuthenticated())
         {
-            // Sign in with Play Game Services, showing the consent dialog
-            // by setting the second parameter to isSilent=false.
+
             PlayGamesPlatform.Instance.Authenticate(SignInCallback, false);
         }
         else

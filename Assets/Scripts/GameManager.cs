@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
+using GooglePlayGames;
+
 
 public class GameManager : MonoBehaviour {
 
@@ -12,10 +14,15 @@ public class GameManager : MonoBehaviour {
 
     int NumGame;
 
-    public bool gameHasBegun, Adfree;
+    public bool gameHasBegun, Adfree, isDead;
+
+    public long score;
+    public LeaderboardManager leaderboardScript;
 
     void Start ()
     {
+        PlayerPrefs.GetInt("NumGame");
+
         if (PlayerPrefs.HasKey("select"))
         {
             if (PlayerPrefs.GetInt("select") == 1)
@@ -47,6 +54,14 @@ public class GameManager : MonoBehaviour {
             PlayerPrefs.SetInt("select", 0);
             AudioListener.volume = 1f;
         }
+
+        isDead = GameObject.Find("Player").GetComponent<Player>().isDead;
+
+
+        if (isDead == true)
+        {
+            GameOver();
+        }
     }
 
     public void GameBegin()
@@ -65,9 +80,6 @@ public class GameManager : MonoBehaviour {
         gamePlayer.GetComponent<Player>().enabled = true;
         gameTilesGenerator.GetComponent<Generator>().enabled = true;
         gameMainCamera.GetComponent<CameraFollow>().enabled = true;
-
-
-
 
     }
 
@@ -161,5 +173,118 @@ public class GameManager : MonoBehaviour {
         #elif UNITY_IPHONE
             buttonRestorePurchase.gameObject.SetActive(false);
         #endif
+    }
+
+    public void GameOver()
+    {
+
+    #if UNITY_ANDROID
+        if (PlayGamesPlatform.Instance.IsAuthenticated())
+        {
+            // Note: make sure to add 'using GooglePlayGames'
+            PlayGamesPlatform.Instance.ReportScore(score,
+                GPGSIds.leaderboard_top_players,
+                (bool success) =>
+                {
+                    Debug.Log("(Lollygagger) Leaderboard update success: " + success);
+                    Debug.Log("Score mandado " + score);
+                });
+        }
+    #endif
+
+    #if UNITY_IOS
+        ReportScore(score,"55969983");
+    #endif
+
+    }
+
+    public void SignInCallback(bool success)
+    {
+
+        if (success)
+        {
+            Debug.Log("(Lollygagger) Signed in!");
+
+            // Change sign-in button text
+            print("Sign out");
+
+            // Show the user's name
+            print("Signed in as: " + Social.localUser.userName);
+        }
+        else
+        {
+            Debug.Log("(Lollygagger) Sign-in failed...");
+#if UNITY_ANDROID
+            LoginAndroid();
+#endif
+#if UNITY_IPHONE
+
+#endif
+            // Show failure message
+            print("Sign in");
+            print("Sign-in failed");
+        }
+
+    }
+    public void LoginAndroid()
+    {
+#if UNITY_ANDROID
+        if (!PlayGamesPlatform.Instance.IsAuthenticated())
+        {
+            // Sign in with Play Game Services, showing the consent dialog
+            // by setting the second parameter to isSilent=false.
+            PlayGamesPlatform.Instance.Authenticate(SignInCallback, false);
+        }
+        else
+        {
+            // Sign out of play games
+            PlayGamesPlatform.Instance.SignOut();
+
+            // Reset UI
+            print("Sign In");
+
+        }
+#endif
+
+    }
+    void ReportScore(long score, string leaderboardID)
+    {
+        Debug.Log("Reporting score " + score + " on leaderboard " + leaderboardID);
+        Social.ReportScore(score, leaderboardID, success =>
+        {
+            Debug.Log(success ? "Reported score successfully" : "Failed to report score");
+        });
+    }
+
+    public static bool IsGCUseLoggedIn
+    {
+        get
+        {
+            Debug.Log("LOGGEDIN " + Social.localUser.authenticated);
+            return Social.localUser.authenticated;
+
+        }
+    }
+    public static string GCUsername
+    {
+        get
+        {
+            return Social.Active.localUser.userName;
+        }
+    }
+    public static void SignIn(System.Action<bool> callback)
+    {
+        Social.localUser.Authenticate(callback);
+        Debug.Log("CALLBACK " + callback);
+    }
+
+
+    public static void UpdateLeaderboard(string id, long score)
+    {
+        if (IsGCUseLoggedIn)
+        {
+            Social.ReportScore(score, id, null);
+        }
+
     }
 }

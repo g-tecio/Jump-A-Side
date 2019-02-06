@@ -18,15 +18,8 @@ public class Player : MonoBehaviour
     private float prevYpos = -1000;
     public bool isDead = false;
     private bool locaSide = true;
-    //false = left
-    //true = right
-
     //UI
     public GameObject gameOverScreen, panelGameScene, tile;
-    public GameObject bigButton;
-    public GameObject smallButton;
-    public GameObject bigButton2;
-    public GameObject smallButton2;
 
     //public GameObject deadEffectPrefab;
 
@@ -45,7 +38,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-
         audiJump = GetComponent<AudioSource>();
         audiLose = gameOverScreen.GetComponent<AudioSource>();
 
@@ -57,10 +49,16 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
-        if (GameObject.Find("Tile(Clone)") && isDead == true)
+        print("GROUNDED: " + Grounded);
+        if (isDead == true)
         {
-            // print("Ahí esta");
+            print("MUERTO POR JUGARLE AL VALIENTE");
+        }
+
+
+            if (GameObject.Find("Tile(Clone)") && isDead == true)
+        {
+            //print("MUERTO POR JUGARLE AL VALIENTE");
 
             Destroy(GameObject.Find("Tile(Clone)"));
         }
@@ -74,10 +72,15 @@ public class Player : MonoBehaviour
     }
     */
         //(transform.position.y + 5f < prevYpos)
-        if (transform.position.y + 2f < prevYpos)
+        if (transform.position.y + 0.2f < prevYpos)
         {
+            rb.AddForce(new Vector2(0f * 0f, 0f * 0f));
             if (!isDead)
             {
+      
+                GameObject playerBoxCollider = GameObject.Find("Player");
+                playerBoxCollider.GetComponent<BoxCollider2D>().enabled = false;
+
                 Death();
             }
         }
@@ -179,9 +182,10 @@ public class Player : MonoBehaviour
 
         Grounded = false;
         lastJump = 'S';
-
+        
         //rb.AddForce(new Vector2(9.8f * 12f, 9.8f * 20f));
-        rb.AddForce(new Vector2(-(9.7f * 10f), 9.8f * 21.5f));
+        rb.AddForce(new Vector2(-(9.8f * 10f), 9.8f * 21.5f));
+        anim.enabled = true;
 
     }//End jumpSmall
 
@@ -190,9 +194,9 @@ public class Player : MonoBehaviour
 
         //rb.AddForce(new Vector2(0,9.8f * 32 o 29f));
         //yield return new WaitForSeconds(0.15f);
-        rb.AddForce(new Vector2(0, 9.7f * 29f));
+        rb.AddForce(new Vector2(0, 9.8f * 29f));
         yield return new WaitForSeconds(0.25f);
-        rb.AddForce(new Vector2(-(9.7f * 14f), 0));
+        rb.AddForce(new Vector2(-(9.8f * 14f), 0));
 
     }//End longJump
 
@@ -213,6 +217,7 @@ public class Player : MonoBehaviour
 
         lastJump = 'B';
         StartCoroutine(longJumpLeft());
+        anim.enabled = true;
 
     }//End jumpLong
 
@@ -232,10 +237,11 @@ public class Player : MonoBehaviour
         Grounded = false;
 
         lastJump = 'S';
-
+        
         //   rb.AddForce(new Vector2(9.8f * 12f, 9.8f * 20f));
         //  rb.AddForce(new Vector2(9.8f * 12f, 9.8f * 21.5f));
-        rb.AddForce(new Vector2(9.7f * 10f, 9.8f * 21.5f));
+        rb.AddForce(new Vector2(9.8f * 10f, 9.8f * 21.5f));
+        anim.enabled = true;
 
     }//End jumpSmall
 
@@ -244,9 +250,9 @@ public class Player : MonoBehaviour
 
         //rb.AddForce(new Vector2(0,9.8f * 32 o 29f));
         //yield return new WaitForSeconds(0.15f);
-        rb.AddForce(new Vector2(0, 9.7f * 29f));
+        rb.AddForce(new Vector2(0, 9.8f * 29f));
         yield return new WaitForSeconds(0.25f);
-        rb.AddForce(new Vector2(9.7f * 14f, 0));
+        rb.AddForce(new Vector2(9.8f * 14f, 0));
 
     }//End longJump
 
@@ -266,6 +272,7 @@ public class Player : MonoBehaviour
         lastJump = 'B';
 
         StartCoroutine(longJumpRight());
+        anim.enabled = true;
 
     }//End jumplong
 
@@ -289,20 +296,23 @@ public class Player : MonoBehaviour
         else
         {
             print("Wrong Jump - Game Over!");
+
+            
             if (GameObject.Find("Tile(Clone)") != null)
             {
-
                 Destroy(GameObject.Find("Tile(Clone)"));
                 Destroy(GameObject.FindWithTag("smallTile"));
                 Destroy(GameObject.FindWithTag("BigTile"));
-
-
             }
+            
+
             isDead = true;
+            
             if (gameOverScreen == false)
             {
                 audiLose.Play();
             }
+
             gameOverScreen.SetActive(true);
             panelGameScene.gameObject.SetActive(false);
 
@@ -310,20 +320,10 @@ public class Player : MonoBehaviour
             gameTile.GetComponent<Animator>().enabled = true;
 
 
-            // tile.gameObject.SetActive(false);
-
-
-
-
-
             GameObject gradientbackground = GameObject.Find("PanelImageBackground");
             gradientbackground.GetComponent<BackgroundMove>().enabled = false;
 
 
-            //bigButton.SetActive(false);
-            //smallButton.SetActive(false);
-            // bigButton2.SetActive(false);
-            // smallButton2.SetActive(false);
             Destroy(pp);
         }
 
@@ -371,13 +371,12 @@ public class Player : MonoBehaviour
             if (firstJump)
             {
                 StartCoroutine(FallTile(col.gameObject, 2.35f));
-                // rb.AddForce(new Vector2(10.7f * 30f, 9.8f * 21.5f));
-                //return;
+                
             }
             else
             {
                 StartCoroutine(FallTile(col.gameObject, 2.35f));
-                //   rb.AddForce(new Vector2(10.7f * 30f, 9.8f * 21.5f));
+
             }
         }
 
@@ -409,7 +408,7 @@ public class Player : MonoBehaviour
 
         if (col.gameObject.tag == "Tile")
         {
-            //StartCoroutine(FallTile(col.gameObject));
+            
             Destroy(col.gameObject);
         }
 
@@ -420,12 +419,12 @@ public class Player : MonoBehaviour
 
         if (isDead == true)
         {
-
+            
             yield return new WaitForSeconds(0.1f);
             if (col.gameObject != null)
                 col.AddComponent<Rigidbody2D>();
-            // rb.AddForce(new Vector2(80.7f * 80f, 9.8f * 21.5f));
-            print("YA TE MORISTE MEN, NOMÁS NO TE HAN AVISADO");
+     
+            
             Destroy(col.gameObject);
         }
         else
@@ -445,36 +444,37 @@ public class Player : MonoBehaviour
         {
             audiLose.Play();
         }
+
         GameObject gradientbackground = GameObject.Find("PanelImageBackground");
         gradientbackground.GetComponent<BackgroundMove>().enabled = false;
 
         GameObject gameMainCamera = GameObject.Find("Main Camera");
         gameMainCamera.GetComponent<CameraFollow>().enabled = false;
 
+        /*
         GameObject gameTile = GameObject.Find("Tile(Clone)");
-        //gameTile.GetComponent<Animator>().enabled = true;
-       
+        gameTile.GetComponent<Animator>().enabled = true;
+       */
+
         panelGameScene.SetActive(false);
+       
+       Destroy(GameObject.Find("Tile(Clone)"));
 
-        Destroy(GameObject.Find("Tile(Clone)"));
-
-        if (GameObject.Find("Tile(Clone)") != null)
-        {
-            Destroy(GameObject.Find("Tile(Clone)"));
+       if (GameObject.Find("Tile(Clone)") != null)
+       {
+           Destroy(GameObject.Find("Tile(Clone)"));
             Destroy(GameObject.FindWithTag("smallTile"));
-            Destroy(GameObject.FindWithTag("BigTile(Clone)"));
+            Destroy(GameObject.FindWithTag("BigTile"));
         }
-        gameOverScreen.SetActive(true);
+       gameOverScreen.SetActive(true);
 
-
+       GameObject playerBoxCollider = GameObject.Find("Player");
+       playerBoxCollider.GetComponent<BoxCollider2D>().enabled = false;
+       
       //  Destroy(Instantiate(deadEffectPrefab, transform.position, Quaternion.identity), 1.0f);
 
         panelGameScene.gameObject.SetActive(false);
-        // tile.gameObject.SetActive(false);
-        // bigButton.SetActive(false);
-        // smallButton.SetActive(false);
-        //  bigButton2.SetActive(false);
-        // smallButton2.SetActive(false);
+ 
         print("Player die");
         isDead = true;
         Destroy(pp);

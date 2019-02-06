@@ -139,7 +139,7 @@ public class Generator : MonoBehaviour
 
         TilePrefab.tag = smallTag;
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
-        print(xPosLeft);
+       // print(xPosLeft);
 
     }//End GenerateSmallTile
 
@@ -151,7 +151,7 @@ public class Generator : MonoBehaviour
 
         TilePrefab.tag = bigTag;
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
-        print(xPosLeft);
+       // print(xPosLeft);
 
     }//End GenerateBigTile
 
@@ -175,7 +175,7 @@ public class Generator : MonoBehaviour
 
         TilePrefab.tag = bigTag;
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
-        print(xPosRight);
+      //  print(xPosRight);
 
     }//End GenerateBigTile
 

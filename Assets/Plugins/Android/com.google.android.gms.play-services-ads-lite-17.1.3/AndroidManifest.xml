@@ -22,6 +22,6 @@
   <application>
     <!-- Include the AdActivity and InAppPurchaseActivity configChanges and themes. -->
     <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:theme="@android:style/Theme.Translucent" />
-    <provider android:name="com.google.android.gms.ads.MobileAdsInitProvider" android:authorities="com.games.cartwheelgalaxy.rightylefty.mobileadsinitprovider" android:exported="false" android:initOrder="100" />
+    <provider android:name="com.google.android.gms.ads.MobileAdsInitProvider" android:authorities="com.games.cartwheelgalaxy.jumpaside.mobileadsinitprovider" android:exported="false" android:initOrder="100" />
   </application>
 </manifest>
