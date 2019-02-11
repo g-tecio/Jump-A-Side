@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Advertisements;
 using GooglePlayGames;
+using GoogleMobileAds.Api;
 
 
 public class GameManager : MonoBehaviour {
@@ -19,9 +20,16 @@ public class GameManager : MonoBehaviour {
     public long score;
     public LeaderboardManager leaderboardScript;
 
+    private InterstitialAd interstitial;
+
     void Start ()
     {
-        PlayerPrefs.GetInt("NumGame");
+
+        //Application.targetFrameRate = 300;
+        //QualitySettings.vSyncCount = 1;
+        RequestInterstitial();
+        NumGame = PlayerPrefs.GetInt("NumGame");
+        print("NUMERO DE JUEGO " + NumGame);
 
         if (PlayerPrefs.HasKey("select"))
         {
@@ -36,9 +44,41 @@ public class GameManager : MonoBehaviour {
                 AudioListener.volume = 1f;
             }
         }
+
+
+     
+       
+
+
+        if (PlayerPrefs.GetInt("FIRSTTIMEOPENING", 1) == 1)
+        {
+           
+            ShowInterstitial();
+            Debug.Log("First Time Opening");
+
+            //Set first time opening to false
+            PlayerPrefs.SetInt("FIRSTTIMEOPENING", 0);
+
+            //Do your stuff here
+            print("YA ABRISTE LA APP POR PRIMERA VEZ JIJI");
+
+        }
+        else
+        {
+            Debug.Log("NOT First Time Opening");
+
+            //Do your stuff here
+            print("UH ESE MEN");
+        }
+
     }
-	
-	void Update ()
+    void OnApplicationQuit()
+    {
+        Debug.Log("Application ending after " + Time.time + " seconds");
+        PlayerPrefs.DeleteKey("FIRSTTIMEOPENING");
+    }
+
+    void Update ()
     {
         Adfree = GameObject.Find("RemoveAds").GetComponent<PurchaserManager>().Adfree;
 
@@ -57,11 +97,12 @@ public class GameManager : MonoBehaviour {
 
         isDead = GameObject.Find("Player").GetComponent<Player>().isDead;
 
-
+        
         if (isDead == true)
         {
             GameOver();
         }
+        
     }
 
     public void GameBegin()
@@ -85,14 +126,14 @@ public class GameManager : MonoBehaviour {
 
     public void ReloadGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+       // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
 
         NumGame = NumGame + 1;
         PanelGameover.gameObject.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         PlayerPrefs.SetInt("NumGame", NumGame);
-
+        ShowInterstitial();
 
         if (NumGame % 3 == 0 && Adfree == false)
         {
@@ -173,6 +214,37 @@ public class GameManager : MonoBehaviour {
         #elif UNITY_IPHONE
             buttonRestorePurchase.gameObject.SetActive(false);
         #endif
+    }
+
+
+    private void RequestInterstitial()
+    {
+        #if UNITY_ANDROID
+            string adUnitId = "ca-app-pub-5267056163100832/6554786361";
+#elif UNITY_IPHONE
+             string adUnitId = "ca-app-pub-5267056163100832/8171120365";
+#else
+             string adUnitId = "unexpected_platform";
+#endif
+
+        // Create an interstitial.
+        this.interstitial = new InterstitialAd(adUnitId);
+        // Load an interstitial ad.
+        this.interstitial.LoadAd(this.CreateAdRequest());
+    }
+
+    // Returns an ad request
+    private AdRequest CreateAdRequest()
+    {
+        return new AdRequest.Builder().Build();
+    }
+
+    private void ShowInterstitial()
+    {
+        if (interstitial.IsLoaded())
+        {
+            interstitial.Show();
+        }
     }
 
     public void GameOver()

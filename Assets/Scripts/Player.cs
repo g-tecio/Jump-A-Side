@@ -55,8 +55,9 @@ public class Player : MonoBehaviour
             print("MUERTO POR JUGARLE AL VALIENTE");
         }
 
+  
 
-            if (GameObject.Find("Tile(Clone)") && isDead == true)
+        if (GameObject.Find("Tile(Clone)") && isDead == true)
         {
             //print("MUERTO POR JUGARLE AL VALIENTE");
 
@@ -72,9 +73,15 @@ public class Player : MonoBehaviour
     }
     */
         //(transform.position.y + 5f < prevYpos)
-        if (transform.position.y + 0.2f < prevYpos)
+        if (transform.position.y + 0.05f < prevYpos)
         {
             rb.AddForce(new Vector2(0f * 0f, 0f * 0f));
+        }
+
+            if (transform.position.y + 0.2f < prevYpos)
+        {
+            
+
             if (!isDead)
             {
       
@@ -111,6 +118,7 @@ public class Player : MonoBehaviour
     {
 
         firstJump = false;
+        anim.enabled = true;
 
         if (!Grounded)
         {
@@ -169,6 +177,7 @@ public class Player : MonoBehaviour
     public void jumpSmallLeft()
     {
         firstJump = false;
+        
 
         if (!Grounded)
         {
@@ -184,8 +193,8 @@ public class Player : MonoBehaviour
         lastJump = 'S';
         
         //rb.AddForce(new Vector2(9.8f * 12f, 9.8f * 20f));
-        rb.AddForce(new Vector2(-(9.8f * 10f), 9.8f * 21.5f));
-        anim.enabled = true;
+        rb.AddForce(new Vector2(-(7.8f * 10f), 9.8f * 21.5f));
+       
 
     }//End jumpSmall
 
@@ -196,13 +205,14 @@ public class Player : MonoBehaviour
         //yield return new WaitForSeconds(0.15f);
         rb.AddForce(new Vector2(0, 9.8f * 29f));
         yield return new WaitForSeconds(0.25f);
-        rb.AddForce(new Vector2(-(9.8f * 14f), 0));
+        rb.AddForce(new Vector2(-(7.8f * 14f), 0));
 
     }//End longJump
 
     public void jumpLongLeft()
     {
         firstJump = false;
+       
 
         if (!Grounded)
         {
@@ -217,13 +227,14 @@ public class Player : MonoBehaviour
 
         lastJump = 'B';
         StartCoroutine(longJumpLeft());
-        anim.enabled = true;
+     
 
     }//End jumpLong
 
     public void jumpSmallRight()
     {
         firstJump = false;
+        
 
         if (!Grounded)
         {
@@ -240,8 +251,8 @@ public class Player : MonoBehaviour
         
         //   rb.AddForce(new Vector2(9.8f * 12f, 9.8f * 20f));
         //  rb.AddForce(new Vector2(9.8f * 12f, 9.8f * 21.5f));
-        rb.AddForce(new Vector2(9.8f * 10f, 9.8f * 21.5f));
-        anim.enabled = true;
+        rb.AddForce(new Vector2(7.8f * 10f, 9.8f * 21.5f));
+     
 
     }//End jumpSmall
 
@@ -252,13 +263,14 @@ public class Player : MonoBehaviour
         //yield return new WaitForSeconds(0.15f);
         rb.AddForce(new Vector2(0, 9.8f * 29f));
         yield return new WaitForSeconds(0.25f);
-        rb.AddForce(new Vector2(9.8f * 14f, 0));
+        rb.AddForce(new Vector2(7.8f * 14f, 0));
 
     }//End longJump
 
     public void jumpLongRight()
     {
         firstJump = false;
+      
 
         if (!Grounded)
         {
@@ -272,7 +284,7 @@ public class Player : MonoBehaviour
         lastJump = 'B';
 
         StartCoroutine(longJumpRight());
-        anim.enabled = true;
+       
 
     }//End jumplong
 
@@ -297,7 +309,15 @@ public class Player : MonoBehaviour
         {
             print("Wrong Jump - Game Over!");
 
-            
+
+
+            gameOverScreen.SetActive(true);
+            panelGameScene.gameObject.SetActive(false);
+
+            GameObject gameTile = GameObject.Find("Tile(Clone)");
+            gameTile.GetComponent<Animator>().enabled = true;
+
+
             if (GameObject.Find("Tile(Clone)") != null)
             {
                 Destroy(GameObject.Find("Tile(Clone)"));
@@ -306,18 +326,14 @@ public class Player : MonoBehaviour
             }
             
 
-            isDead = true;
+            
             
             if (gameOverScreen == false)
             {
                 audiLose.Play();
             }
 
-            gameOverScreen.SetActive(true);
-            panelGameScene.gameObject.SetActive(false);
 
-            GameObject gameTile = GameObject.Find("Tile(Clone)");
-            gameTile.GetComponent<Animator>().enabled = true;
 
 
             GameObject gradientbackground = GameObject.Find("PanelImageBackground");
@@ -370,12 +386,12 @@ public class Player : MonoBehaviour
 
             if (firstJump)
             {
-                StartCoroutine(FallTile(col.gameObject, 2.35f));
+                StartCoroutine(FallTile(col.gameObject, 2.45f));
                 
             }
             else
             {
-                StartCoroutine(FallTile(col.gameObject, 2.35f));
+                StartCoroutine(FallTile(col.gameObject, 2.45f));
 
             }
         }
@@ -420,7 +436,7 @@ public class Player : MonoBehaviour
         if (isDead == true)
         {
             
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
             if (col.gameObject != null)
                 col.AddComponent<Rigidbody2D>();
      

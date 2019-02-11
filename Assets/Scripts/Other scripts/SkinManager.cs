@@ -68,8 +68,6 @@ public class SkinManager : MonoBehaviour {
             platformObject.GetComponent<SpriteRenderer>().sprite = platformWhite;
             */
 
-
-
         }
 
         if (SkinNeon == true)
