@@ -7,7 +7,7 @@ public class ShareManager : MonoBehaviour
     int score;
     private string ANDROID_RATE_URL = "market://details?id=com.games.cartwheelgalaxy.jumpaside";
     //private string IOS_RATE_URL = "itms-apps://itunes.apple.com/app/APPIDIOS";
-    private string IOS_RATE_URL = "https://itunes.apple.com/developer/cartwheel-galaxy-inc/id412798912";
+    private string IOS_RATE_URL = "https://itunes.apple.com/app/jump-a-side/id1451732906";
 
     void Start()
     {
@@ -17,8 +17,6 @@ public class ShareManager : MonoBehaviour
     void Update()
     {
         score = GameObject.Find("GameManager").GetComponent<ScoreManager>().currentScore;
-
-
     }
 
     public void startShare()
@@ -43,9 +41,9 @@ public class ShareManager : MonoBehaviour
         Destroy(ss);
 
 #if UNITY_ANDROID
-        new NativeShare().AddFile(filePath).SetSubject("Subject goes here").SetText("I got " + score + " in Fiesta Balloon, can you beat me?  https://play.google.com/store/apps/details?id=com.games.cartwheelgalaxy.jumpaside").Share();
+        new NativeShare().AddFile(filePath).SetSubject("Subject goes here").SetText("I got " + score + " in Jump A Side, can you beat me?  https://play.google.com/store/apps/details?id=com.games.cartwheelgalaxy.jumpaside").Share();
 #elif UNITY_IPHONE
-        new NativeShare().AddFile(filePath).SetSubject("Subject goes here").SetText("I got " + score + " in Fiesta Balloon, can you beat me?  https://itunes.apple.com/developer/cartwheel-galaxy-inc/id412798912").Share();
+        new NativeShare().AddFile(filePath).SetSubject("Subject goes here").SetText("I got " + score + " in Jump A Side, can you beat me?  https://itunes.apple.com/app/jump-a-side/id1451732906").Share();
 #endif
 
 
@@ -56,10 +54,10 @@ public class ShareManager : MonoBehaviour
 
     public void RateApp()
     {
-        #if UNITY_ANDROID
-            Application.OpenURL(ANDROID_RATE_URL);
-        #elif UNITY_IPHONE
+#if UNITY_ANDROID
+        Application.OpenURL(ANDROID_RATE_URL);
+#elif UNITY_IPHONE
             Application.OpenURL(IOS_RATE_URL);
-        #endif
+#endif
     }
 }

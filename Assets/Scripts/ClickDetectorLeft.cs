@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickDetectorLeft : MonoBehaviour {
+public class ClickDetectorLeft : MonoBehaviour
+{
 
     private float doubleClickTimeLimit = 0.35f;
     bool clickedOnce = false;
@@ -48,14 +49,14 @@ public class ClickDetectorLeft : MonoBehaviour {
     }
     private void SingleClick()
     {
-        Debug.Log("Single Click");
+        //   Debug.Log("Single Click");
         //Right Short Jump
         scriptPlayer.jumpSmallLeft();
     }
 
     private void DoubleClick()
     {
-        Debug.Log("Double Click");
+        //    Debug.Log("Double Click");
         //Right Long Jump
         scriptPlayer.jumpLongLeft();
 

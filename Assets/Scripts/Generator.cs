@@ -6,13 +6,13 @@ public class Generator : MonoBehaviour
 {
 
     public GameObject TilePrefab;
-    private float xDiff = 1.1f;
-    private float yDiffSmall = 0.5f;
-    private float yDiffeBig = 1.4f;
-    private float xPos = -2.5f;
-    private float xPosLeft = -1.0f;
-    private float xPosRight = 0.1f;
-    private float yPos = -4.5f;
+    private float xDiff = 2.5f; //1.1f; 
+    private float yDiffSmall = 0.5f; //0.5f;    0.5 + 0.6 = 1.1
+    private float yDiffeBig = 1.4f; //1.4f;
+    private float xPos = -2.5f; //-2.5f;
+    private float xPosLeft = -1.0f;  //-1.0f;
+    private float xPosRight = 0.1f; //0.1f;
+    private float yPos = -4.5f; //-4.5f;
     public int random2;
     //-2.5f;
     //-4.5f;
@@ -24,17 +24,56 @@ public class Generator : MonoBehaviour
     //false = left
     //true = right
     public bool firstJump = true;
+    public bool Grounded;
+
+    public bool skinSpring, skinNormal;
+
 
     void Start()
     {
+        skinNormal = GameObject.Find("SkinManager").GetComponent<SkinManager>().skinNormal;
+        skinSpring = GameObject.Find("SkinManager").GetComponent<SkinManager>().skinSpring;
+
+        if (skinSpring == false)
+        {
+            xDiff = 1.1f;
+
+        }
+        else
+        {
+            xDiff = 2.5f;
+        }
 
         for (int i = 0; i < 2; i++)
         {
             GenerateTiles();
         }
 
+        // Grounded = true;
+        print("GROUNDED ON START" + Grounded);
+
+
+
     }//End Start
 
+    void Update()
+    {
+
+        Grounded = GameObject.Find("Player").GetComponent<Player>().Grounded;
+        //  print("GROUNDED IN GENERATOR " + Grounded);
+        skinNormal = GameObject.Find("SkinManager").GetComponent<SkinManager>().skinNormal;
+        skinSpring = GameObject.Find("SkinManager").GetComponent<SkinManager>().skinSpring;
+
+        if (skinSpring == false)
+        {
+            xDiff = 1.1f;
+
+        }
+        else
+        {
+            xDiff = 2.5f;
+        }
+    }
     public void GenerateTiles()
     {
         random2 = Random.Range(0, 5);
@@ -53,7 +92,7 @@ public class Generator : MonoBehaviour
             {
                 if (random <= 2)
                 {
-                    if (random2 <= 2)
+                    if (random2 <= 2 && Grounded == true)
                     {
                         GenerateSmallTileRight();
                     }
@@ -68,7 +107,7 @@ public class Generator : MonoBehaviour
                 {
 
 
-                    if (random2 <= 2)
+                    if (random2 <= 2 && Grounded == true)
                     {
                         GenerateBigTileRight();
                     }
@@ -86,7 +125,7 @@ public class Generator : MonoBehaviour
                 if (random <= 2)
                 {
 
-                    if (random2 <= 2)
+                    if (random2 <= 2 && Grounded == true)
                     {
                         GenerateSmallTileLeft();
                     }
@@ -102,7 +141,7 @@ public class Generator : MonoBehaviour
                 {
 
 
-                    if (random2 <= 2)
+                    if (random2 <= 2 && Grounded == true)
                     {
                         GenerateBigTileLeft();
                     }
@@ -120,11 +159,18 @@ public class Generator : MonoBehaviour
 
             if (side == true)
             {
-                side = false;
+                if (Grounded == true)
+                {
+                    side = false;
+                }
+
             }
             else
             {
-                side = true;
+                if (Grounded == true)
+                {
+                    side = true;
+                }
             }
 
         }//End Else
@@ -139,7 +185,7 @@ public class Generator : MonoBehaviour
 
         TilePrefab.tag = smallTag;
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
-       // print(xPosLeft);
+        // print(xPosLeft);
 
     }//End GenerateSmallTile
 
@@ -150,8 +196,10 @@ public class Generator : MonoBehaviour
         xPos += xDiff;
 
         TilePrefab.tag = bigTag;
+
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
-       // print(xPosLeft);
+
+        // print(xPosLeft);
 
     }//End GenerateBigTile
 
@@ -163,7 +211,7 @@ public class Generator : MonoBehaviour
 
         TilePrefab.tag = smallTag;
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
-        print(xPosRight);
+        //print(xPosRight);
 
     }//End GenerateSmallTile
 
@@ -174,8 +222,10 @@ public class Generator : MonoBehaviour
         xPos += xDiff;
 
         TilePrefab.tag = bigTag;
+
         Instantiate(TilePrefab, new Vector3(xPos, yPos, 0f), TilePrefab.transform.rotation);
-      //  print(xPosRight);
+
+        //  print(xPosRight);
 
     }//End GenerateBigTile
 

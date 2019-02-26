@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ClickCountDetector : MonoBehaviour
 {
-private float doubleClickTimeLimit = 0.25f;
+    private float doubleClickTimeLimit = 0.25f;
 
     protected void Start()
     {
@@ -47,12 +47,12 @@ private float doubleClickTimeLimit = 0.25f;
 
     private void SingleClick()
     {
-        Debug.Log("Single Click");
+        //   Debug.Log("Single Click");
     }
 
     private void DoubleClick()
     {
-        Debug.Log("Double Click");
+        //   Debug.Log("Double Click");
     }
 
 }

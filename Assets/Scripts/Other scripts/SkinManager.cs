@@ -5,142 +5,141 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class SkinManager : MonoBehaviour {
-
-
-  //  public GameObject arrowRight, arrowLeft, balloonCenter, balloonLeft, balloonRight, balloonMenu, warningSign, lockIcon, heartGroup;
-  //  public Sprite balloonHeartSprite, arrowHeartRightSprite, arrowHeartLeftSprite, warningSignRed;
-  //  public Sprite balloonWhiteSprite, arrowWhiteRightSprite, arrowWhiteLeftSprite, warningSignWhite;
+public class SkinManager : MonoBehaviour
+{
     public Image UIBackground;
+    public GameObject titleGameMenuNormal, titleGameMenuSpring, titleGameStoreNormal, titleGameStoreSpring, backgroundNormal, backgroundBee;
     int randomBackground;
+
+    public GameObject lockIconSpring;
     bool gamehasBegun;
-
-    public bool SkinNeon, SkinNormal;
-    public bool SkinOwnedNeon, SkinOwnedNormal;
-
-    
+    public bool skinNormal, skinSpring;
+    public bool skinOwnedNormal, skinOwnedSpring;
     private int actualCurrency = 0;
+    int priceSpring = 100;
 
-    int priceNeon = 100;
-
-    void Start ()
+    void Start()
     {
         //PlayerPrefs.DeleteAll();
-        SkinNeon = Convert.ToBoolean(PlayerPrefs.GetInt("SkinNeon"));
-        SkinNormal = Convert.ToBoolean(PlayerPrefs.GetInt("SkinNormal"));
-        SkinOwnedNeon = Convert.ToBoolean(PlayerPrefs.GetInt("SkinOwnedNeon"));
-        priceNeon = PlayerPrefs.GetInt("priceNeon");
+        skinSpring = Convert.ToBoolean(PlayerPrefs.GetInt("skinSpring"));
+        skinNormal = Convert.ToBoolean(PlayerPrefs.GetInt("skinNormal"));
+        skinOwnedSpring = Convert.ToBoolean(PlayerPrefs.GetInt("skinOwnedSpring"));
+        priceSpring = PlayerPrefs.GetInt("priceSpring");
 
-        if (SkinNormal == false && SkinNeon == false)
+
+        if (skinNormal == false && skinSpring == false)
         {
             ChangeBackground1();
+            backgroundNormal.gameObject.gameObject.SetActive(true);
+            backgroundBee.gameObject.gameObject.SetActive(false);
         }
 
-        if (SkinNormal == true)
+        if (skinNormal == true)
         {
             ChangeBackground1();
+            backgroundNormal.gameObject.gameObject.SetActive(true);
+            backgroundBee.gameObject.gameObject.SetActive(false);
         }
 
-        if (SkinNeon == true)
+        if (skinSpring == true)
         {
-            ChangeBackground2();
+            backgroundNormal.gameObject.gameObject.SetActive(false);
+            backgroundBee.gameObject.gameObject.SetActive(true);
         }
-      
 
-
-        if (SkinOwnedNeon == true)
+        if (skinOwnedSpring == true)
         {
-            priceNeon = 0;
+            lockIconSpring.gameObject.gameObject.SetActive(false);
+            priceSpring = 0;
         }
         else
         {
-            priceNeon = 100;
+            priceSpring = 100;
         }
 
-        if (SkinNormal == true)
+        if (skinNormal == true)
         {
-            /*
-            //NORMAL SKIN
-            squareWhiteSprite = Resources.Load<Sprite>("Normal/Square");
-            squareObject.GetComponent<SpriteRenderer>().sprite = squareWhiteSprite;
 
-            platformWhite = Resources.Load<Sprite>("Normal/Platform");
-            platformObject.GetComponent<SpriteRenderer>().sprite = platformWhite;
-            */
+
+            titleGameMenuNormal.gameObject.SetActive(true);
+            titleGameMenuSpring.gameObject.SetActive(false);
+
+            titleGameStoreNormal.gameObject.SetActive(true);
+            titleGameStoreSpring.gameObject.SetActive(false);
 
         }
 
-        if (SkinNeon == true)
+        if (skinSpring == true)
         {
-            /*
-            //VALENTINE'S SKIN
-            squareNeonSprite = Resources.Load<Sprite>("Neon/SquareNeon");
-            squareObject.GetComponent<SpriteRenderer>().sprite = squareWhiteSprite;
+            titleGameMenuNormal.gameObject.SetActive(false);
+            titleGameMenuSpring.gameObject.SetActive(true);
 
-            platformNeon = Resources.Load<Sprite>("Neon/PlatformNeon");
-            platformObject.GetComponent<SpriteRenderer>().sprite = platformWhite;
-            */
+            titleGameStoreNormal.gameObject.SetActive(false);
+            titleGameStoreSpring.gameObject.SetActive(true);
         }
     }
 
 
     public void SkinNormalSelected()
     {
-        SkinNormal = true;
-        SkinNeon = false;
-        PlayerPrefs.SetInt("SkinNeon", Convert.ToInt32(SkinNeon));
-        PlayerPrefs.SetInt("SkinNormal", Convert.ToInt32(SkinNormal));
+        skinNormal = true;
+        skinSpring = false;
+        PlayerPrefs.SetInt("skinSpring", Convert.ToInt32(skinSpring));
+        PlayerPrefs.SetInt("skinNormal", Convert.ToInt32(skinNormal));
 
-        /*
-        //NORMAL SKIN
-        squareWhiteSprite = Resources.Load<Sprite>("Normal/Square");
-        squareObject.GetComponent<SpriteRenderer>().sprite = squareWhiteSprite;
+        titleGameMenuNormal.gameObject.SetActive(true);
+        titleGameMenuSpring.gameObject.SetActive(false);
 
-        platformWhite = Resources.Load<Sprite>("Normal/Platform");
-        platformObject.GetComponent<SpriteRenderer>().sprite = platformWhite;
+        titleGameStoreNormal.gameObject.SetActive(true);
+        titleGameStoreSpring.gameObject.SetActive(false);
+
+        backgroundNormal.gameObject.gameObject.SetActive(true);
+        backgroundBee.gameObject.gameObject.SetActive(false);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        */
+
 
     }
 
 
-    public void SkinNeonSelected()
+    public void SkinSpringSelected()
     {
 
-        if (actualCurrency >= priceNeon)
+        if (actualCurrency >= priceSpring)
         {
 
-            actualCurrency = actualCurrency - priceNeon;
-            priceNeon = 0;
+            actualCurrency = actualCurrency - priceSpring;
+            priceSpring = 0;
 
-            PlayerPrefs.SetInt("priceNeon", priceNeon);
-     
+            PlayerPrefs.SetInt("priceSpring", priceSpring);
+
             PlayerPrefs.SetInt("Currency", actualCurrency);
 
-           // lockIcon.gameObject.SetActive(false);
+            lockIconSpring.gameObject.SetActive(false);
 
-            SkinNeon = true;
-            SkinNormal = false;
-            PlayerPrefs.SetInt("SkinNeon", Convert.ToInt32(SkinNeon));
-            PlayerPrefs.SetInt("SkinNormal", Convert.ToInt32(SkinNormal));
+            skinSpring = true;
+            skinNormal = false;
+            PlayerPrefs.SetInt("skinSpring", Convert.ToInt32(skinSpring));
+            PlayerPrefs.SetInt("skinNormal", Convert.ToInt32(skinNormal));
 
-            SkinOwnedNeon = true;
-            PlayerPrefs.SetInt("SkinOwnedNeon", Convert.ToInt32(SkinOwnedNeon));
+            skinOwnedSpring = true;
+            PlayerPrefs.SetInt("skinOwnedSpring", Convert.ToInt32(skinOwnedSpring));
 
-            /*
-            //NEON SKIN
-            squareNeonSprite = Resources.Load<Sprite>("Neon/SquareNeon");
-            squareObject.GetComponent<SpriteRenderer>().sprite = squareWhiteSprite;
+            titleGameMenuNormal.gameObject.SetActive(false);
+            titleGameMenuSpring.gameObject.SetActive(true);
 
-            platformNeon = Resources.Load<Sprite>("Neon/PlatformNeon");
-            platformObject.GetComponent<SpriteRenderer>().sprite = platformWhite;
+            titleGameStoreNormal.gameObject.SetActive(false);
+            titleGameStoreSpring.gameObject.SetActive(true);
 
-    */
+            backgroundNormal.gameObject.gameObject.SetActive(false);
+            backgroundBee.gameObject.gameObject.SetActive(true);
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
         }
         else
         {
-         //   print("You don't have enough currency");
+            print("You don't have enough currency");
         }
 
     }
@@ -148,26 +147,15 @@ public class SkinManager : MonoBehaviour {
     void Update()
     {
         actualCurrency = GameObject.Find("GameManager").GetComponent<ScoreManager>().saveCurrency;
-        print("CURRENCY AT THE START " + actualCurrency);
-        gamehasBegun = GameObject.Find("GameManager").GetComponent<GameManager>().gameHasBegun;
-        if (gamehasBegun == true)
-        {
-       //     wordLove.gameObject.SetActive(true);
 
-        }
-        else
-        {
-        //    wordLove.gameObject.SetActive(false);
-        }
-        
-        }
+    }
 
 
     void ChangeBackground1()
     {
         UIBackground = GameObject.Find("PanelImageBackground").GetComponent<Image>();
         randomBackground = UnityEngine.Random.Range(1, 8);
-      //  print("RANDOM NORMAL: " + randomBackground);
+        //  print("RANDOM NORMAL: " + randomBackground);
         switch (randomBackground)
         {
             case 1:

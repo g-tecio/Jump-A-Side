@@ -7,10 +7,11 @@ using GooglePlayGames;
 using GoogleMobileAds.Api;
 
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     public GameObject panelMainMenu, panelGameScene, panelMissios, PanelGameover, panelStore, panelHasBeenBought;
-    public GameObject showTutorial, buttonTapToPlay, buttonStore, buttonNoAds, buttonSound, buttonLeaderboard, buttonRestorePurchase, closeTutorialButton, titleGame;
+    public GameObject showTutorial, buttonTapToPlay, buttonStore, buttonNoAds, buttonSound, buttonLeaderboard, buttonRestorePurchase, closeTutorialButton, titleGame, titleGameBee;
     public GameObject playerObj, tilesGeneratorObj, gradient6Obj;
 
     int NumGame;
@@ -19,14 +20,21 @@ public class GameManager : MonoBehaviour {
 
     public long score;
     public LeaderboardManager leaderboardScript;
-
+    System.Action<bool> callback;
     private InterstitialAd interstitial;
 
-    void Start ()
+    private bool skinSpring, skinNormal;
+
+    void Start()
     {
 
-        //Application.targetFrameRate = 300;
-        //QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 300;
+        QualitySettings.vSyncCount = 1;
+
+#if UNITY_IOS
+            SignIn(callback);
+#endif
+
         RequestInterstitial();
         NumGame = PlayerPrefs.GetInt("NumGame");
         print("NUMERO DE JUEGO " + NumGame);
@@ -46,14 +54,8 @@ public class GameManager : MonoBehaviour {
         }
 
 
-     
-       
-
-
         if (PlayerPrefs.GetInt("FIRSTTIMEOPENING", 1) == 1)
         {
-           
-            ShowInterstitial();
             Debug.Log("First Time Opening");
 
             //Set first time opening to false
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour {
 
             //Do your stuff here
             print("YA ABRISTE LA APP POR PRIMERA VEZ JIJI");
+            ShowInterstitial();
 
         }
         else
@@ -71,6 +74,7 @@ public class GameManager : MonoBehaviour {
             print("UH ESE MEN");
         }
 
+
     }
     void OnApplicationQuit()
     {
@@ -78,9 +82,17 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.DeleteKey("FIRSTTIMEOPENING");
     }
 
-    void Update ()
+    void Update()
     {
         Adfree = GameObject.Find("RemoveAds").GetComponent<PurchaserManager>().Adfree;
+        score = GameObject.Find("GameManager").GetComponent<ScoreManager>().currentScore;
+
+        skinNormal = GameObject.Find("SkinManager").GetComponent<SkinManager>().skinNormal;
+        skinSpring = GameObject.Find("SkinManager").GetComponent<SkinManager>().skinSpring;
+        print("SkinNormal" + skinNormal);
+        print("skinSpring:" + skinSpring);
+
+        // print("SCORE EN GAME MANAGER:" + score);
 
         if (buttonSound.GetComponent<UnityEngine.UI.Toggle>().isOn == true)
         {
@@ -97,12 +109,12 @@ public class GameManager : MonoBehaviour {
 
         isDead = GameObject.Find("Player").GetComponent<Player>().isDead;
 
-        
+
         if (isDead == true)
         {
             GameOver();
         }
-        
+
     }
 
     public void GameBegin()
@@ -111,29 +123,37 @@ public class GameManager : MonoBehaviour {
         panelMainMenu.gameObject.SetActive(false);
         panelGameScene.gameObject.SetActive(true);
 
+
+
         playerObj.gameObject.SetActive(true);
         tilesGeneratorObj.gameObject.SetActive(true);
 
-        GameObject gamePlayer= GameObject.Find("Player");
+        GameObject gamePlayer = GameObject.Find("Player");
         GameObject gameTilesGenerator = GameObject.Find("TilesGenerator");
         GameObject gameMainCamera = GameObject.Find("Main Camera");
+        GameObject backgroundBee = GameObject.Find("PanelImageBackgroundBee");
 
         gamePlayer.GetComponent<Player>().enabled = true;
         gameTilesGenerator.GetComponent<Generator>().enabled = true;
         gameMainCamera.GetComponent<CameraFollow>().enabled = true;
 
+        //  backgroundBee.GetComponent<BackgroundMove>().enabled = true;
+
+
+
+
     }
 
     public void ReloadGame()
     {
-       // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
 
         NumGame = NumGame + 1;
         PanelGameover.gameObject.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         PlayerPrefs.SetInt("NumGame", NumGame);
-        ShowInterstitial();
+        // ShowInterstitial();
 
         if (NumGame % 3 == 0 && Adfree == false)
         {
@@ -145,6 +165,8 @@ public class GameManager : MonoBehaviour {
 
     public void ShowMissions()
     {
+        GameObject deathSound = GameObject.Find("PanelGameOver");
+        deathSound.GetComponent<AudioSource>().enabled = false;
         panelMissios.gameObject.SetActive(true);
         PanelGameover.gameObject.SetActive(false);
 
@@ -153,6 +175,7 @@ public class GameManager : MonoBehaviour {
 
     public void CloseMissions()
     {
+
         panelMissios.gameObject.SetActive(false);
         PanelGameover.gameObject.SetActive(true);
 
@@ -184,17 +207,20 @@ public class GameManager : MonoBehaviour {
 
 
         titleGame.gameObject.SetActive(false);
+        titleGameBee.gameObject.SetActive(false);
+
+
         buttonTapToPlay.gameObject.SetActive(false);
         buttonStore.gameObject.SetActive(false);
         buttonNoAds.gameObject.SetActive(false);
         buttonSound.gameObject.SetActive(false);
         buttonLeaderboard.gameObject.SetActive(false);
 
-        #if UNITY_ANDROID
-            buttonRestorePurchase.gameObject.SetActive(false);
-        #elif UNITY_IPHONE
+#if UNITY_ANDROID
+        buttonRestorePurchase.gameObject.SetActive(false);
+#elif UNITY_IPHONE
             buttonRestorePurchase.gameObject.SetActive(true);
-        #endif
+#endif
     }
 
     public void CloseTutorial()
@@ -202,25 +228,36 @@ public class GameManager : MonoBehaviour {
         showTutorial.gameObject.SetActive(false);
         closeTutorialButton.gameObject.SetActive(false);
 
-        titleGame.gameObject.SetActive(true);
+
+
+
+        if (skinNormal == true || skinSpring == false)
+        {
+            titleGame.gameObject.SetActive(true);
+        }
+
+        if (skinSpring == true)
+        {
+            titleGameBee.gameObject.SetActive(true);
+        }
         buttonTapToPlay.gameObject.SetActive(true);
         buttonStore.gameObject.SetActive(true);
         buttonNoAds.gameObject.SetActive(true);
         buttonSound.gameObject.SetActive(true);
         buttonLeaderboard.gameObject.SetActive(true);
 
-        #if UNITY_ANDROID
+#if UNITY_ANDROID
+        buttonRestorePurchase.gameObject.SetActive(false);
+#elif UNITY_IPHONE
             buttonRestorePurchase.gameObject.SetActive(false);
-        #elif UNITY_IPHONE
-            buttonRestorePurchase.gameObject.SetActive(false);
-        #endif
+#endif
     }
 
 
     private void RequestInterstitial()
     {
-        #if UNITY_ANDROID
-            string adUnitId = "ca-app-pub-5267056163100832/6554786361";
+#if UNITY_ANDROID
+        string adUnitId = "ca-app-pub-5267056163100832/6554786361";
 #elif UNITY_IPHONE
              string adUnitId = "ca-app-pub-5267056163100832/8171120365";
 #else
@@ -250,10 +287,11 @@ public class GameManager : MonoBehaviour {
     public void GameOver()
     {
 
-    #if UNITY_ANDROID
+#if UNITY_ANDROID
         if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
             // Note: make sure to add 'using GooglePlayGames'
+            print("QUIERO MI ONEPLUS");
             PlayGamesPlatform.Instance.ReportScore(score,
                 GPGSIds.leaderboard_top_players,
                 (bool success) =>
@@ -262,11 +300,11 @@ public class GameManager : MonoBehaviour {
                     Debug.Log("Score mandado " + score);
                 });
         }
-    #endif
+#endif
 
-    #if UNITY_IOS
-        ReportScore(score,"55969983");
-    #endif
+#if UNITY_IOS
+        ReportScore(score,"JumpAsideleaderboard");
+#endif
 
     }
 

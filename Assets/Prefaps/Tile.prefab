@@ -23,10 +23,11 @@ GameObject:
   - component: {fileID: 23089657209719584}
   - component: {fileID: 61989740151884018}
   - component: {fileID: 114631612084398388}
+  - component: {fileID: 114854675601365298}
   - component: {fileID: 95448908907430038}
   m_Layer: 0
   m_Name: Tile
-  m_TagString: smallTile
+  m_TagString: bigTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,6 +128,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a2d7464b2604922998596005573a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114854675601365298
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1582974542390322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2980010e07931b74db66e3fa9af1022c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material:
+  - {fileID: 2100000, guid: 3025eaff188f84bdd8fa9996365b5601, type: 2}
+  - {fileID: 2100000, guid: 56405a514c7c53344956d56808509482, type: 2}
+  m_Collider: {fileID: 61989740151884018}
 --- !u!224 &224694047794767242
 RectTransform:
   m_ObjectHideFlags: 1

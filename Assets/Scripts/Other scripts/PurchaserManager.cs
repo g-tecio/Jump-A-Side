@@ -28,7 +28,7 @@ public class PurchaserManager : MonoBehaviour, IStoreListener
     public static string kProductIDConsumable = "consumable";
     public static string IDRemoveads = "01remove_ads";
 
-    public static string IDRemoveadsiOS = "removeAds01";
+    public static string IDRemoveadsiOS = "removeAdsJump01";
     public static string kProductIDNonConsumable = "nonconsumable";
     public static string kProductIDSubscription = "subscription";
 
@@ -153,9 +153,9 @@ public class PurchaserManager : MonoBehaviour, IStoreListener
                 // asynchronously.
 
                 m_StoreController.InitiatePurchase(product);
-              //  Adfree = true;
-              //  PlayerPrefs.SetInt("Adfree", Convert.ToInt32(Adfree));
-              //  AdMob.bannerView.Destroy();
+                //  Adfree = true;
+                //  PlayerPrefs.SetInt("Adfree", Convert.ToInt32(Adfree));
+                //  AdMob.bannerView.Destroy();
 
             }
             // Otherwise ...
